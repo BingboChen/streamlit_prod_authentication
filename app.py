@@ -31,33 +31,40 @@ def main():
         link = f'<a href="{authorization_url}" target="_blank">Authorize with Google</a>'
         st.markdown(link, unsafe_allow_html=True)
         
-    code = st.text_input(
+    full_url = st.text_input(
         "Enter some text 👇"
     )
     
-    if code:
-        decoded_code = urllib.parse.unquote(code)
-        # 4. Exchange Authorization Code for Tokens
-        flow.fetch_token(code=decoded_code)
+    if full_url:
+        parsed_url = urllib.parse.urlparse(full_url)
+        query_params = urllib.parse.parse_qs(parsed_url.query)
         
-        credentials = flow.credentials
-        st.session_state['credentials'] = credentials
-        
-        # display_youtube_analytics()
-        
-        # 5. Save the Credentials
-        credentials_dict = {
-            'token': credentials.token,
-            'refresh_token': credentials.refresh_token,
-            'token_uri': credentials.token_uri,
-            'client_id': credentials.client_id,
-            'client_secret': credentials.client_secret,
-            'scopes': credentials.scopes,
-        }
-        credentials_json = json.dumps(credentials_dict, indent=4)
-        st.text_area("Credentials JSON", credentials_json, height=500)
+        # Extract the authorization code from the query parameters
+        if 'code' in query_params:
+            # The query params are returned as lists, so get the first item
+            auth_code = query_params['code'][0]
+            # Decode the URL-encoded authorization code
+            decoded_code = urllib.parse.unquote(auth_code)
+            
+            # Use this decoded_code to fetch the token as before
+            flow.fetch_token(code=decoded_code)
+            
+            credentials = flow.credentials
+            st.session_state['credentials'] = credentials
+            
+            # 5. Save the Credentials
+            credentials_dict = {
+                'token': credentials.token,
+                'refresh_token': credentials.refresh_token,
+                'token_uri': credentials.token_uri,
+                'client_id': credentials.client_id,
+                'client_secret': credentials.client_secret,
+                'scopes': credentials.scopes,
+            }
+            credentials_json = json.dumps(credentials_dict, indent=4)
+            st.text_area("Credentials JSON", credentials_json, height=500)
 
-        print("Credentials saved to credentials.json")
+            print("Credentials saved to credentials.json")
 
 
 if __name__ == '__main__':
