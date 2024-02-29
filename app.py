@@ -8,7 +8,7 @@ import json
 if 'credentials' not in st.session_state:
     st.session_state['credentials'] = None
 
-redirect_uri = "http://localhost:8501/"
+redirect_uri = "https://appappappentication-nkut58a4ijjpd75cuelejh.streamlit.app/"
 SCOPES = ['https://www.googleapis.com/auth/youtube.readonly', 'https://www.googleapis.com/auth/yt-analytics.readonly']
 
 
