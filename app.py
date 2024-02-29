@@ -23,10 +23,12 @@ def main():
     if st.button("Sign in with Google"):
         # Generate the authorization URL and direct the user to it
         authorization_url, state = flow.authorization_url(
-            access_type="offline",
+            access_type="online",
             include_granted_scopes="true",
         )
-        webbrowser.open_new_tab(authorization_url)
+        # Generate a clickable link for the user
+        link = f'<a href="{authorization_url}" target="_blank">Authorize with Google</a>'
+        st.markdown(link, unsafe_allow_html=True)
         
     code = st.text_input(
         "Enter some text 👇"
