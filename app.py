@@ -3,6 +3,7 @@ import streamlit as st
 import google_auth_oauthlib.flow
 import webbrowser
 import json
+import urllib.parse
 
 # Initialize session state variables
 if 'credentials' not in st.session_state:
@@ -35,8 +36,9 @@ def main():
     )
     
     if code:
+        decoded_code = urllib.parse.unquote(code)
         # 4. Exchange Authorization Code for Tokens
-        flow.fetch_token(code=code)
+        flow.fetch_token(code=decoded_code)
         
         credentials = flow.credentials
         st.session_state['credentials'] = credentials
