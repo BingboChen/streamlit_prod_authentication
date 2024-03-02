@@ -45,7 +45,7 @@ def main():
             auth_code = query_params['code'][0]
             # Decode the URL-encoded authorization code
             decoded_code = urllib.parse.unquote(auth_code)
-            st.write(decoded_code)
+            # st.write(decoded_code)
             # Use this decoded_code to fetch the token as before
             flow.fetch_token(code=decoded_code)
             
