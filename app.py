@@ -25,6 +25,7 @@ def main():
         # Generate the authorization URL and direct the user to it
         authorization_url, state = flow.authorization_url(
             access_type="offline",
+            prompt='consent',
             include_granted_scopes="true",
         )
         # Generate a clickable link for the user
